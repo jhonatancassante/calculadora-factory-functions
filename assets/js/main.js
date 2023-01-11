@@ -115,7 +115,7 @@
             },
 
             parentesesFechado(valor) {
-                if (this.ultimoENumero()) {
+                if (this.ultimoENumero() || this.ultimoEParentesesFechado()) {
                     this.paraDisplay(valor);
                     this.parenteses--;
                 }
