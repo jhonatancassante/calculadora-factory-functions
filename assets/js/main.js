@@ -16,37 +16,30 @@
                 document.addEventListener('click', (e) => {
                     const el = e.target;
 
-                    if (el.classList.contains('btn-num')) {
+                    if (el.classList.contains('btn-num'))
                         this.paraDisplay(el.innerText);
-                    }
 
-                    if (el.classList.contains('btn-clear')) {
+                    if (el.classList.contains('btn-clear'))
                         this.clearDisplay();
-                    }
 
-                    if (el.classList.contains('btn-del')) {
+                    if (el.classList.contains('btn-del'))
                         this.apagaUm();
-                    }
 
-                    if (el.classList.contains('btn-eq')) {
+                    if (el.classList.contains('btn-eq'))
                         this.realizaConta();
-                    }
 
-                    if (el.classList.contains('btn-operator')) {
+                    if (el.classList.contains('btn-operator'))
                         this.operadorDisplay(el.innerText);
-                    }
 
-                    if (el.classList.contains('btn-open')) {
+                    if (el.classList.contains('btn-open'))
                         this.parentesesAberto(el.innerText);
-                    }
 
-                    if (el.classList.contains('btn-close') && this.parenteses) {
+                    if (el.classList.contains('btn-close') && this.parenteses)
                         this.parentesesFechado(el.innerText);
-                    }
 
-                    if (el.classList.contains('btn-dot')) {
+                    if (el.classList.contains('btn-dot'))
                         this.dotDisplay(el.innerText);
-                    }
+
                 });
             },
 
@@ -54,42 +47,25 @@
                 this.display.addEventListener('keypress', (e) => {
                     e.preventDefault();
 
-                    if (e.key === 'Escape' || e.key === "Delete") {
+                    if (e.key === 'Escape' || e.key === "Delete")
                         this.clearDisplay();
-                        return;
-                    }
 
-                    if (e.key === 'Backspace') {
-                        this.apagaUm();
-                        return;
-                    }
+                    else if (e.key === 'Backspace') this.apagaUm();
 
-                    if (e.key === 'Enter') {
-                        this.realizaConta();
-                        return;
-                    }
+                    else if (e.key === 'Enter') this.realizaConta();
 
-                    if (e.key === '/' || e.key === '*' || e.key === '-' || e.key === '+') {
+                    else if (e.key === '/' || e.key === '*'
+                        || e.key === '-' || e.key === '+')
                         this.operadorDisplay(e.key);
-                        return;
-                    }
 
-                    if (e.key === '(') {
-                        this.parentesesAberto(e.key);
-                        return;
-                    }
+                    else if (e.key === '(') this.parentesesAberto(e.key);
 
-                    if (e.key === ')' && this.parenteses) {
+                    else if (e.key === ')' && this.parenteses)
                         this.parentesesFechado(e.key);
-                        return;
-                    }
 
-                    if (e.key === '.') {
-                        this.dotDisplay(e.key);
-                        return;
-                    }
+                    else if (e.key === '.') this.dotDisplay(e.key);
 
-                    this.paraDisplay(e.key);
+                    else this.paraDisplay(e.key);
                 });
             },
 
@@ -98,18 +74,21 @@
                     this.display.value = '';
                     this.igual = false;
                 }
-                if (this.testaConta(valor)) {
+
+                if (this.testaConta(valor))
                     this.display.value += valor;
-                }
+
             },
 
             parentesesAberto(valor) {
-                if (!this.ultimoENumero() && this.ponto) {
+                if (!this.ultimoENumero() && this.ponto)
                     return;
-                }
-                if (this.ultimoENumero() && !this.igual) {
+
+                if (this.ultimoENumero()
+                    && !this.displayIsEmpty()
+                    && !this.igual)
                     this.paraDisplay('*')
-                }
+
                 this.paraDisplay(valor);
                 this.parenteses++;
             },
@@ -122,31 +101,35 @@
             },
 
             dotDisplay(valor) {
-                if (this.ultimoEParentesesFechado() || this.ponto) {
+                if (this.ultimoEParentesesFechado() || this.ponto)
                     return;
-                }
-                if (!this.ultimoENumero() || this.ultimoEParentesesAberto()) {
+
+                if (!this.ultimoENumero()
+                    || this.ultimoEParentesesAberto()
+                    || this.displayIsEmpty()) {
                     this.paraDisplay('0')
                 }
+
                 this.paraDisplay(valor);
                 this.ponto = true;
             },
 
             operadorDisplay(valor) {
-                if (this.ultimoEParentesesAberto()) {
+                if (this.ultimoEParentesesAberto())
                     this.display.value = this.display.value.slice(0, -1);
-                }
-                if (!this.ultimoENumero() && !this.ultimoEParentesesFechado()) {
+
+                if (!this.ultimoENumero() && !this.ultimoEParentesesFechado())
                     this.display.value = this.display.value.slice(0, -1);
-                }
+
+
+                if (this.displayIsEmpty())
+                    return;
+
                 this.paraDisplay(valor);
                 this.ponto = false;
             },
 
             ultimoENumero() {
-                if (this.display.value === '') {
-                    return false;
-                }
                 const lastDigit = Number(this.display.value.slice(-1));
                 return Number.isInteger(lastDigit);
             },
@@ -161,6 +144,11 @@
                 return lastDigit === ')';
             },
 
+            displayIsEmpty() {
+                if (this.display.value.length === 0)
+                    return true;
+            },
+
             clearDisplay() {
                 this.display.value = '';
                 this.ponto = false;
@@ -170,15 +158,15 @@
 
             apagaUm() {
                 const lastDigit = this.display.value.slice(-1);
-                if (lastDigit === '(') {
+                if (lastDigit === '(')
                     this.parenteses--;
-                }
-                if (lastDigit === ')') {
+
+                if (lastDigit === ')')
                     this.parenteses++;
-                }
-                if (lastDigit === '.') {
+
+                if (lastDigit === '.')
                     this.ponto = false;
-                }
+
                 this.display.value = this.display.value.slice(0, -1);
             },
 
