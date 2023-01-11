@@ -206,5 +206,3 @@
     calculadora.inicia();
 
 })();
-
-// 27:15
