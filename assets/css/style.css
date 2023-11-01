@@ -68,6 +68,7 @@ body {
     border-radius: 8px;
 }
 
+/*
 .btn::before {
     content: "";
     position: absolute;
@@ -83,6 +84,7 @@ body {
     border-bottom: 1px solid #0004;
     border-top: 1px solid #0009;
 }
+*/
 
 .btn i {
     position: relative;
